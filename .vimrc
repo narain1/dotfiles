@@ -1,76 +1,68 @@
-unlet! skip_defaults_vim
-source $VIMRUNTIME/defaults.vim
-packadd! matchit
-
+" General settings
 set background=dark
 set ignorecase
 set smartcase
+set encoding=utf-8
+set ttyfast
+set mouse=a
+set t_Co=256
+set foldcolumn=3
+set shortmess-=S
+set pastetoggle=<F10>
+set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent fileformat=unix
+set fo-=t
+set list
+set listchars=tab:>-
+set display+=lastline
+set incsearch
+set number relativenumber
+set clipboard=unamedplus "sets the default copy register
+syntax on
 
-color slate
+" Cursor appearance
 let &t_ti.="\e[1 q"
 let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 
-filetype off
-
-set ttyfast
-set mouse=a
-set t_Co=256
-
-set foldcolumn=3
-
-set rtp+=~/.vim/bundle/vundle
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tmhedberg/SimpylFold'
-let g:SimpylFold_docstring_preview=1
-
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'valloric/youcompleteme'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
-
-"Plugin 'janko-m/vim-test'
-"nmap <silent> <leader>t :TestNearest<CR>
-"nmap <silent> <leader>T :TestFile<CR>
-"nmap <silent> <leader>a :TestSuite<CR>
-"nmap <silent> <leader>l :TestLast<CR>
-"nmap <silent> <leader>g :TestVisit<CR>
-
-Plugin 'jeetsukumaran/vim-indentwise'
-Plugin 'vim-scripts/indentpython.vim'
-"Plugin 'Konfekt/FastFold'
-
-call vundle#end()            " required
-filetype plugin indent on
-
-let python_highlight_all=1
-syntax on
-set encoding=utf-8
-
+" File handling
 set backupdir=~/vimfiles/tmp,.
 set directory=~/vimfiles/tmp,.
 
-set pastetoggle=<F10>
-set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab autoindent fileformat=unix
-set fo-=t
+" Vundle Configuration
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'tmhedberg/SimpylFold'
+    Plugin 'tpope/vim-repeat'
+    Plugin 'tpope/vim-dispatch'
+    Plugin 'tpope/vim-eunuch'
+    Plugin 'tpope/vim-surround'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'valloric/youcompleteme'
+    Plugin 'vim-syntastic/syntastic'
+    Plugin 'nvie/vim-flake8'
+    Plugin 'preservim/nerdtree'
+    Plugin 'vim-airline/vim-airline'
+    Plugin 'jeetsukumaran/vim-indentwise'
+    Plugin 'vim-scripts/indentpython.vim'
+call vundle#end()
+filetype plugin indent on
+
+" Python specific settings
 au BufNewFile,BufRead *.py set shiftwidth=4 textwidth=119
 setlocal foldmethod=syntax
-set list
-set listchars=tab:>-
-set display+=lastline
-set incsearch
+let python_highlight_all=1
 
+" Airline configuration
+let g:airline#extensions#tabline#enabled = 1
+
+" Key mappings
 let mapleader = "\\"
 map <Leader>ve :sp $HOME/.vimrc<CR>
 map <Leader>vs :source $HOME/.vimrc<CR>
-
+nnoremap <silent> <expr> <CR> Highlighting()
+nnoremap <space> za
 map g] :stj<CR>
 map <Leader>= <C-W>=
 map <Leader><CR> <C-W>_
@@ -83,15 +75,7 @@ map <Leader>4 99<C-W><Up>3<C-W>j<C-W>_
 map <Leader>5 99<C-W><Up>4<C-W>j<C-W>_
 map <Leader>d Oimport pdb; pdb.set_trace()^[
 
-"split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-]> g<C-]>
-
-" Press Enter to highlight current word
-let g:highlighting = 0
+" Highlight current word on Enter
 function! Highlighting()
   if g:highlighting == 1 && @/ =~ '^\\<'.expand('<cword>').'\\>$'
     let g:highlighting = 0
@@ -101,17 +85,10 @@ function! Highlighting()
   let g:highlighting = 1
   return ":silent set hlsearch\<CR>"
 endfunction
-nnoremap <silent> <expr> <CR> Highlighting()
 
-set number relativenumber
-set nu rnu
-vmap // :s:^://<CR>
-set clipboard=unamed "sets the default copy register to be *
-set clipboard=unamedplus "sets the default copy register to be +
-
-set foldmethod=indent
-set foldlevel=99
-
-nnoremap <space> za
-let python_highlight_all=1
-syntax on
+" Split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-]> g<C-]>
