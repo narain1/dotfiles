@@ -92,3 +92,8 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-]> g<C-]>
+
+let g:ycm_keep_logfiles = 1
+let g:ycm_log_level = 'debug'
+load &rtp .= ',' . expand( '<sfile>:p:h' )
+syn on
